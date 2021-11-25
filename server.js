@@ -11,9 +11,9 @@ import ward from './routers/ward.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5500;
+const PORT = process.env.PORT;
 
-const URI = process.env.DATABASE_URL;
+const URI = 'mongodb+srv://admin:bMOY3X2waXbvKwDx@cluster0.dc4ca.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }));
