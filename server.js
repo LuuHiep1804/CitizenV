@@ -11,9 +11,9 @@ import ward from './routers/ward.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
-const URI = 'mongodb+srv://admin:bMOY3X2waXbvKwDx@cluster0.dc4ca.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const URI = process.env.DATABASE_URL;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }));
@@ -33,8 +33,7 @@ mongoose.connect(URI, {
     useUnifiedTopology: true
 })
 .then(() => {
-    console.log('Connected to database!');
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
         console.log(`Server is running on http://localhost:${PORT}`)
     });
 }).catch(err => {
