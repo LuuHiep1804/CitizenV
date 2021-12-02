@@ -19,6 +19,16 @@ export const getRgroupById = async (req, res) => {
     }
 }
 
+export const getRgroupsByWardId = async (req, res) => {
+    try {
+        const ward_id = req.params._id;
+        const Rgroups_by_ward_id = await RGroupModel.find({ward_id: ward_id});
+        res.status(200).json(Rgroups_by_ward_id);
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
+}
+
 export const createRgroup = async (req, res) => {
     try {
         const newRgroup = req.body;

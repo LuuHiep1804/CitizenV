@@ -7,7 +7,7 @@ router.get('/', getDistrict);
 
 router.get('/:_id', getDistrictById);
 
-router.get('/districts-by-province/:_id', getDistrictsByProvinceId);
+router.get('/by-province/:_id', getDistrictsByProvinceId);
 
 router.post('/', createDistrict);
 

@@ -7,7 +7,7 @@ router.get('/', getWard);
 
 router.get('/:_id', getWardById);
 
-router.get('/wards-by-district/:_id', getWardsByDistrictId);
+router.get('/by-district/:_id', getWardsByDistrictId);
 
 router.post('/', createWard);
 
