@@ -19,6 +19,16 @@ export const getWardById = async (req, res) => {
     }
 }
 
+export const getWardsByDistrictId = async (req, res) => {
+    try {
+        const district_id = req.params._id;
+        const wards_by_district_id = await WardModel.find({district_id: district_id});
+        res.status(200).json(wards_by_district_id);
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
+}
+
 export const createWard = async (req, res) => {
     try {
         const newWard = req.body;

@@ -19,6 +19,16 @@ export const getDistrictById = async (req, res) => {
     }
 }
 
+export const getDistrictsByProvinceId = async (req, res) => {
+    try {
+        const province_id = req.params._id;
+        const districts_by_province_id = await DistrictModel.find({province_id: province_id});
+        res.status(200).json(districts_by_province_id);
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
+}
+
 export const createDistrict = async (req, res) => {
     try {
         const newDistrict = req.body;

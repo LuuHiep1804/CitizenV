@@ -21,10 +21,10 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    ward_id: {
+    residential_group_id: {
         type: String,
         required: true,
-        ref: 'wards'
+        ref: 'residential groups'
     },
     place_of_residence: {
         type: String,
@@ -38,7 +38,7 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     }
-}, { timestamps: true}, {
+}, {
     collection: 'person'
 });
 
