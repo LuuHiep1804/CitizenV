@@ -82,6 +82,49 @@ export const getPersonById = async (req, res) => {
     }
 }
 
+export const getPersonByRGroupId = async (req, res) => {
+    try {
+        const residential_group_id = req.params._id;
+        let personByRGroupId 
+        = await PersonModel.find({
+            residential_group_id: residential_group_id
+        })
+        .populate({
+            path: 'residential_group_id',
+            populate: {
+                path: 'ward_id',
+                populate: {
+                    path: 'district_id',
+                    populate: {path: 'province_id'}
+                }
+            }
+        });
+        personByRGroupId = personByRGroupId.map(person => {
+            const Rgroup = person.residential_group_id;
+            const ward = Rgroup.ward_id;
+            const district = ward.district_id;
+            const province = district.province_id;
+            return {
+                _id: person._id,
+                name: person.name,
+                gender: person.gender,
+                date_of_birth: person.date_of_birth,
+                religion: person.religion,
+                place_of_residence: person.place_of_residence,
+                academic_level: person.academic_level,
+                career: person.career,
+                residential_group: Rgroup.name,
+                ward: ward.name,
+                district: district.name,
+                province: province.name
+            };
+        });
+        res.status(200).json(personByRGroupId);
+    } catch (err) {
+        res.status(500).json({error: err})
+    }
+}
+
 export const addPerson = async (req, res) => {
     try {
         const infoPerson = req.body;
