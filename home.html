@@ -5,10 +5,71 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API</title>
+    <style>
+        .main {
+            margin-left: 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        strong {
+            margin-right: 5px;
+        }
+        p {
+            color: blue;
+        }
+    </style>
 </head>
 <body>
     <div class="main">
-        <p>Hello</p>
+        <div class="province">
+            <h2>Province</h2>
+            <ul>
+                <li><strong>GET</strong> (tất cả tỉnh/thành) <p>https://censos-system-3306-server.herokuapp.com/api/province</p></li>
+                <li><strong>GET</strong> (tỉnh/thành theo <strong>_id</strong>) <p>https://censos-system-3306-server.herokuapp.com/api/province/{_id}</p></li>
+                <li><strong>POST</strong> (thêm tỉnh/thành mới) <p>https://censos-system-3306-server.herokuapp.com/api/province</p></li>
+                <li><strong>PUT</strong> (chỉnh sửa tỉnh/thành theo <strong>_id</strong>) <p>https://censos-system-3306-server.herokuapp.com/api/province/{_id}</p></li>
+            </ul>
+        </div>
+        <div class="district">
+            <h2>District</h2>
+            <ul>
+                <li><strong>GET</strong> (tất cả quận/huyện) <p>https://censos-system-3306-server.herokuapp.com/api/district</p></li>
+                <li><strong>GET</strong> (quận/huyện theo <strong>_id</strong>) <p>https://censos-system-3306-server.herokuapp.com/api/district/{_id}</p></li>
+                <li><strong>GET</strong> (quận/huyện thuộc tỉnh/thành, <strong>_id</strong> của tỉnh/thành) <p>https://censos-system-3306-server.herokuapp.com/api/district/by-province/{_id}</p></li>
+                <li><strong>POST</strong> (thêm quận/huyện mới) <p>https://censos-system-3306-server.herokuapp.com/api/district</p></li>
+                <li><strong>PUT</strong> (chỉnh sửa quận/huyện theo <strong>_id</strong>) <p>https://censos-system-3306-server.herokuapp.com/api/district/{_id}</p></li>
+            </ul>
+        </div>
+        <div class="ward">
+            <h2>Ward</h2>
+            <ul>
+                <li><strong>GET</strong> (tất cả phường/xã) <p>https://censos-system-3306-server.herokuapp.com/api/ward</p></li>
+                <li><strong>GET</strong> (phường/xã theo <strong>_id</strong>) <p>https://censos-system-3306-server.herokuapp.com/api/ward/{_id}</p></li>
+                <li><strong>GET</strong> (phường/xã thuộc quận/huyện, <strong>_id</strong> của quận/huyện) <p>https://censos-system-3306-server.herokuapp.com/api/ward/by-district/{_id}</p></li>
+                <li><strong>POST</strong> (thêm phường/xã mới) <p>https://censos-system-3306-server.herokuapp.com/api/ward</p></li>
+                <li><strong>PUT</strong> (chỉnh sửa phường/xã theo <strong>_id</strong>) <p>https://censos-system-3306-server.herokuapp.com/api/ward/{_id}</p></li>
+            </ul>
+        </div>
+        <div class="residential-group">
+            <h2>Residential Group</h2>
+            <ul>
+                <li><strong>GET</strong> (tất cả /tổ dân phố/thôn/bản) <p>https://censos-system-3306-server.herokuapp.com/api/residential-group</p></li>
+                <li><strong>GET</strong> (/tổ dân phố/thôn/bản theo <strong>_id</strong>) <p>https://censos-system-3306-server.herokuapp.com/api/residential-group/{_id}</p></li>
+                <li><strong>GET</strong> (/tổ dân phố/thôn/bản thuộc phường/xã, <strong>_id</strong> của phường/xã) <p>https://censos-system-3306-server.herokuapp.com/api/residential-group/by-ward/{_id}</p></li>
+                <li><strong>POST</strong> (thêm /tổ dân phố/thôn/bản mới) <p>https://censos-system-3306-server.herokuapp.com/api/residential-group</p></li>
+                <li><strong>PUT</strong> (chỉnh sửa /tổ dân phố/thôn/bản theo <strong>_id</strong>) <p>https://censos-system-3306-server.herokuapp.com/api/residential-group/{_id}</p></li>
+            </ul>
+        </div>
+        <div class="person">
+            <h2>Person</h2>
+            <ul>
+                <li><strong>GET</strong> (tất cả người dân) <p>https://censos-system-3306-server.herokuapp.com/api/person</p></li>
+                <li><strong>GET</strong> (người dân theo <strong>_id</strong>) <p>https://censos-system-3306-server.herokuapp.com/api/person/{_id}</p></li>
+                <li><strong>GET</strong> (người dân thuộc tổ dân phố/thôn/bản, <strong>_id</strong> của tổ dân phố/thôn/bản) <p>https://censos-system-3306-server.herokuapp.com/api/person/by-group/{_id}</p></li>
+                <li><strong>POST</strong> (thêm người dân mới) <p>https://censos-system-3306-server.herokuapp.com/api/person</p></li>
+                <li><strong>PUT</strong> (chỉnh sửa người dân theo <strong>_id</strong>) <p>https://censos-system-3306-server.herokuapp.com/api/person/{_id}</p></li>
+            </ul>
+        </div>
     </div>
 </body>
 </html>
