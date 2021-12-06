@@ -18,7 +18,10 @@ const schema = new mongoose.Schema({
         required: true,
         ref: 'provinces'
     },
-    wards: []
+    total_person: {
+        type: Number,
+        required: true
+    }
 }, {
     collection: 'districts'
 });

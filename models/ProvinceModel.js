@@ -13,7 +13,10 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    districts: []
+    total_person: {
+        type: Number,
+        required: true
+    }
 }, {
     collection: 'provinces'
 });
