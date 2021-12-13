@@ -23,6 +23,12 @@ router.get('/user/managerment-B2', verifyToken, checkB1, getRoleB2);
 
 router.delete('/logout', verifyToken, logout);
 
-router.put('/update/:_id', verifyToken, update);
+router.put('/update-A2/:_id', verifyToken, checkA1, update);
+
+router.put('/update-A3/:_id', verifyToken, checkA2, update);
+
+router.put('/update-B1/:_id', verifyToken, checkA3, update);
+
+router.put('/update-B2/:_id', verifyToken, checkB1, update);
 
 export default router;
