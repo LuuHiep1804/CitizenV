@@ -8,8 +8,9 @@ import province from './routers/province.js';
 import district from './routers/district.js';
 import ward from './routers/ward.js';
 import residential_group from './routers/Rgroup.js';
-import * as path from 'path';
 import account from './routers/account.js';
+import analysis from './routers/analysis.js';
+import * as path from 'path';
 
 dotenv.config();
 
@@ -38,7 +39,9 @@ app.use('/api/ward/', ward);
 
 app.use('/api/residential-group/', residential_group);
 
-app.use('/api/login/', account);
+app.use('/api/account/', account);
+
+app.use('/api/analysis/', analysis);
 
 
 mongoose.connect(URI, {

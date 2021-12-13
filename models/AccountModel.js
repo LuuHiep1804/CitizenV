@@ -14,21 +14,23 @@ const schema = new mongoose.Schema({
         required: true
     },
     role: {
-        type: String,
-        required: true
-    },
-    province_id: {
-        type: String,
-        required: true,
-        ref: 'provinces'
+        type: String
     },
     status: {
-        type: String,
-        default: 'not authorized'
+        type: Boolean,
+        default: false
+    },
+    license: {
+        type: Boolean,
+        default: false
     },
     license_term: {
         type: String,
-        default: " "
+        default: ""
+    },
+    refreshToken: {
+        type: String,
+        default: ""
     }
 }, {
     collection: 'accounts'

@@ -1,13 +1,17 @@
 import express from 'express';
-import {addPerson, getPerson, getPersonById, getPersonByRGroupId, updatePerson} from '../controllers/person.js';
+import {addPerson, getPersonByDistrictId, getPersonById, getPersonByProvinceId, getPersonByRGroupId, getPersonByWardId, updatePerson} from '../controllers/person.js';
 
 const router = express.Router();
-
-router.get('/', getPerson);
 
 router.get('/:_id', getPersonById);
 
 router.get('/by-group/:_id', getPersonByRGroupId);
+
+router.get('/by-ward/:_id', getPersonByWardId);
+
+router.get('/by-district/:_id', getPersonByDistrictId);
+
+router.get('/by-province/:_id', getPersonByProvinceId);
 
 router.post('/', addPerson);
 

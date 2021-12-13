@@ -4,44 +4,28 @@ import { ProvinceModel } from "../models/ProvinceModel.js";
 import { RGroupModel } from "../models/RGroupModel.js";
 import { WardModel } from "../models/WardModel.js";
 
-export const getPerson = async (req, res) => {
-    try {
-        let allPerson 
-        = await PersonModel.find()
-        .populate({
-            path: 'residential_group_id',
-            populate: {
-                path: 'ward_id',
-                populate: {
-                    path: 'district_id',
-                    populate: {path: 'province_id'}
-                }
-            }
-        });
-        allPerson = allPerson.map(person => {
-            const Rgroup = person.residential_group_id;
-            const ward = Rgroup.ward_id;
-            const district = ward.district_id;
-            const province = district.province_id;
-            return {
-                _id: person._id,
-                name: person.name,
-                gender: person.gender,
-                date_of_birth: person.date_of_birth,
-                religion: person.religion,
-                place_of_residence: person.place_of_residence,
-                academic_level: person.academic_level,
-                career: person.career,
-                residential_group: Rgroup.name,
-                ward: ward.name,
-                district: district.name,
-                province: province.name
-            };
-        });
-        res.status(200).json(allPerson);
-    } catch (err) {
-        res.status(500).json({error: err});
-    }
+const formPerson = (people) => {
+    people = people.map(person => {
+        const Rgroup = person.residential_group_id;
+        const ward = Rgroup.ward_id;
+        const district = ward.district_id;
+        const province = district.province_id;
+        return {
+            _id: person._id,
+            name: person.name,
+            gender: person.gender,
+            date_of_birth: person.date_of_birth,
+            religion: person.religion,
+            place_of_residence: person.place_of_residence,
+            academic_level: person.academic_level,
+            career: person.career,
+            residential_group: Rgroup.name,
+            ward: ward.name,
+            district: district.name,
+            province: province.name
+        };
+    });
+    return people;
 }
 
 export const getPersonById = async (req, res) => {
@@ -99,29 +83,121 @@ export const getPersonByRGroupId = async (req, res) => {
                 }
             }
         });
-        personByRGroupId = personByRGroupId.map(person => {
-            const Rgroup = person.residential_group_id;
-            const ward = Rgroup.ward_id;
-            const district = ward.district_id;
-            const province = district.province_id;
-            return {
-                _id: person._id,
-                name: person.name,
-                gender: person.gender,
-                date_of_birth: person.date_of_birth,
-                religion: person.religion,
-                place_of_residence: person.place_of_residence,
-                academic_level: person.academic_level,
-                career: person.career,
-                residential_group: Rgroup.name,
-                ward: ward.name,
-                district: district.name,
-                province: province.name
-            };
-        });
-        res.status(200).json(personByRGroupId);
+        res.status(200).json(formPerson(personByRGroupId));
     } catch (err) {
         res.status(500).json({error: err})
+    }
+}
+
+export const getPersonByWardId = async (req, res) => {
+    try {
+        const ward_id = req.params._id;
+        const group_id = await RGroupModel.find({ward_id: ward_id});
+        let personByWardId = [];
+        for (let i = 0; i < group_id.length; i++) {
+            let personByRGroupId 
+            = await PersonModel.find({residential_group_id: group_id[i]})
+            .populate({
+                path: 'residential_group_id',
+                populate: {
+                    path: 'ward_id',
+                    populate: {
+                        path: 'district_id',
+                        populate: {path: 'province_id'}
+                    }
+                }
+            });
+            personByRGroupId.forEach(person => {
+                personByWardId.push(person);
+            })
+        }
+        res.status(200).json(formPerson(personByWardId));
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
+}
+
+export const getPersonByDistrictId = async (req, res) => {
+    try {
+        const district_id = req.params._id;
+        const wards = await WardModel.find({district_id: district_id});
+        let groups = [];
+        for (let i = 0; i < wards.length; i++) {
+            let _groups = await RGroupModel.find({ward_id: wards[i]._id});
+            _groups.forEach(_group => {
+                groups.push(_group._id);
+            })
+        }
+        let personByDistrict = [];
+        for(let i = 0; i < groups.length; i++) {
+            let personByRGroupId 
+            = await PersonModel.find({
+                residential_group_id: groups[i]
+            })
+            .populate({
+                path: 'residential_group_id',
+                populate: {
+                    path: 'ward_id',
+                    populate: {
+                        path: 'district_id',
+                        populate: {path: 'province_id'}
+                    }
+                }
+            });
+            personByRGroupId.forEach(person => {
+                personByDistrict.push(person);
+            })
+        }
+        res.status(200).json(formPerson(personByDistrict)); 
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
+}
+
+export const getPersonByProvinceId = async (req, res) => {
+    try {
+        const province_id = req.params._id;
+        let districts = await DistrictModel.find({province_id: province_id});
+        districts = districts.map(district => {
+            return district._id;
+        });
+        let wards = [];
+        for(let i = 0; i < districts.length; i++) {
+            let _wards = await WardModel.find({district_id: districts[i]});
+            _wards.forEach(ward => {
+                wards.push(ward._id);
+            });
+        }
+        let groups = [];
+        for(let i = 0; i < wards.length; i++) {
+            let _groups = await RGroupModel.find({ward_id: wards[i]});
+            _groups.forEach(group => {
+                groups.push(group._id);
+            })
+        }
+        let personByProvince = [];
+        for(let i = 0; i < groups.length; i++) {
+            let personByRGroupId 
+                = await PersonModel.find({
+                    residential_group_id: groups[i]
+                })
+                .populate({
+                    path: 'residential_group_id',
+                    populate: {
+                        path: 'ward_id',
+                        populate: {
+                            path: 'district_id',
+                            populate: {path: 'province_id'}
+                        }
+                    }
+                });
+                personByRGroupId.forEach(person => {
+                    personByProvince.push(person);
+                });
+        }
+        res.status(200).json(formPerson(personByProvince));
+    } catch (err) {
+        res.status(500).json({error: err});
     }
 }
 
