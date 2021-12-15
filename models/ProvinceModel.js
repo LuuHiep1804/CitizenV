@@ -12,10 +12,6 @@ const schema = new mongoose.Schema({
     division_type: {
         type: String,
         required: true
-    },
-    total_person: {
-        type: Number,
-        required: true
     }
 }, {
     collection: 'provinces'
