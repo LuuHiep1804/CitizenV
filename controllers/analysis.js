@@ -3,7 +3,7 @@ import { PersonModel } from "../models/PersonModel.js";
 
 // xử lý tính toán phần trăm giới tính nam nữ theo độ tuổi 
 // ở đây có 18 thang tuổi (0;4) ,(5,9), ..., (80-84), 85+
-const handleAge = (arr) => {
+const ageAndGenderAnalysis = (arr) => {
     // tham số arr ở đây là 1 mảng lưu các object có dạng { gender: person.gender, age: person.age };
     // age = new Date().getFullYear() - năm sinh
     let categoryArr = Array(18).fill(0); 
@@ -36,7 +36,7 @@ const handleAge = (arr) => {
     return percentAge;
 }
 
-const handleJob = (arr) => {
+const careerAnalysis = (arr) => {
     
     let arrJob = [];
     arrJob['Học sinh'] = 0;
@@ -54,7 +54,7 @@ const handleJob = (arr) => {
     return arrJob;
 }
 
-const handleReligion = (arr) => {
+const religiousAnalysis = (arr) => {
 
     var arrReligion = [];
     arrReligion['Không'] = 0;
@@ -67,94 +67,33 @@ const handleReligion = (arr) => {
         arrReligion[religion]++;
     }
 
-    arrReligion.map((data, i) => {
-        return Number.parseFloat(data / arr.length * 100).toFixed(1);
-    })
+    // arrReligion.map((data, i) => {
+    //     return Number.parseFloat(data / arr.length * 100).toFixed(1);
+    // })
 
     return arrReligion;
 }
 
-const analysisJob = (people) => {
-    let arrJob = handleJob(people);
-    const job = {
-        'Học sinh': arrJob['Học sinh'],
-        'Sinh viên': arrJob['Sinh viên'],
-        'Lao động tự do': arrJob['Lao động tự do'],
-        'Cng nhân': arrJob['Công nhân'],
-        'Giáo viên': arrJob['Giáo viên'],
-        'Lập trình viên': arrJob['Lập trình viên'],
-        'Kinh doanh': arrJob['Kinh doanh']
-    }
-    return job;
-}
+// const careerAnalysis = (people) => {
+//     let arrJob = handleJob(people);
+//     const job = {
+//         'Học sinh': arrJob['Học sinh'],
+//         'Sinh viên': arrJob['Sinh viên'],
+//         'Lao động tự do': arrJob['Lao động tự do'],
+//         'Cng nhân': arrJob['Công nhân'],
+//         'Giáo viên': arrJob['Giáo viên'],
+//         'Lập trình viên': arrJob['Lập trình viên'],
+//         'Kinh doanh': arrJob['Kinh doanh']
+//     }
+//     return job;
+// }
 
-const analysisReligion = (people) => {
-    let arrReligion = handleReligion(people);
-    const religion = {
-        'Không': arrReligion['Không'],
-        'Đạo Phật': arrReligion['Đạo Phật'],
-        'Thiên Chúa': arrReligion['Thiên Chúa']
-    }
-    return religion;
-}
-
-const format = (people, _id) =>{
-    const job = analysisJob(people);
-    const religion = analysisReligion(people);
-    people = people.map(person => {
-        let age = new Date().getFullYear() - person.date_of_birth.slice(-4);
-        return {
-            gender: person.gender,
-            age: age
-        }
-    });
-    const ageAndGender = handleAge(people);
-    return {
-        _id: _id,
-        age_and_gender: ageAndGender,
-        job: job,
-        religion: religion
-    }
-}
-
-export const getAnalysisInGroup = async (req, res) => {
-    try {
-        const group_id = req.params._id;
-        const analysis = await AnalysisModel.findById(group_id);
-        res.status(200).json(analysis);
-    } catch (err) {
-        res.sendStatus(500);
-    }
-}
-
-export const getAnalysisInWard = async (req, res) => {
-    try {
-        
-    } catch (error) {
-        
-    }
-}
-
-export const getAnalysisInDistrict = async (req, res) => {
-    try {
-        
-    } catch (error) {
-        
-    }
-}
-
-export const getAnalysisInProvince = async (req, res) => {
-    try {
-        
-    } catch (error) {
-        
-    }
-}
-
-export const getAnalysisAll = async (req, res) => {
-    try {
-        
-    } catch (error) {
-        
-    }
-}
+// const religiousAnalysis = (people) => {
+//     let arrReligion = handleReligion(people);
+//     const religion = {
+//         'Không': arrReligion['Không'],
+//         'Đạo Phật': arrReligion['Đạo Phật'],
+//         'Thiên Chúa': arrReligion['Thiên Chúa']
+//     }
+//     return religion;
+// }
