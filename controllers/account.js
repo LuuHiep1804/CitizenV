@@ -12,7 +12,7 @@ const generateTokens = payload => {
         {_id, role},
         process.env.ACCESS_TOKEN_SECRET,
         {
-            expiresIn: '30m'
+            expiresIn: '2m'
         }
     );
 
@@ -47,7 +47,7 @@ export const login = async (req, res) => {
             updateRefreshToken(data._id, tokens.refreshToken);
             res.status(200).json(tokens);
         }else {
-            res.sendStatus(401);
+            res.status(401).json('mật khẩu hoặc tài khoản sai');
         }
     } catch (err) {
         res.status(500).json({error: err});
@@ -113,7 +113,7 @@ export const register = async (req, res) => {
         };
         const check = await AccountModel.findOne({username: info.username});
         if (check) {
-            res.status(500).json('account is available');
+            res.status(400).json('account is available');
         }else {
             const user = new AccountModel(info);
             await user.save();
