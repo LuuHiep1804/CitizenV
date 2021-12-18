@@ -86,7 +86,7 @@ export const logout = async (req, res) => {
     try {
         const data = req.data;
         updateRefreshToken(data._id, "");
-        res.status(200).json("đã xóa refreshToken");
+        res.sendStatus(204);
     } catch (err) {
         res.status(500).json({error: err});
     }
