@@ -5,17 +5,25 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    age_and_gender: {
-        type: Array,
+    total_person: {
+        type: Number,
         required: true
     },
-    job: {
+    gender_by_age: {
+        type: Object,
+        required: true
+    },
+    career: {
         type: Object,
         required: true
     },
     religion: {
         type: Object,
         required: true
+    },
+    belong: {
+        type: String,
+        default: ""
     }
 },{timestamps: true}, {
     collection: 'analyses'
