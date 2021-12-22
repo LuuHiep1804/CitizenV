@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, getUser, getAccessToken, logout, register, update, getRoleA2, getRoleA3, getRoleB1, getRoleB2 } from '../controllers/account.js';
+import { login, getUser, getAccessToken, logout, register, update, getRoleA2, getRoleLower } from '../controllers/account.js';
 import { checkA1, checkA2, checkA3, checkB1, verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -15,11 +15,11 @@ router.get('/user', verifyToken, getUser);
 
 router.get('/user/managerment-A2', verifyToken, checkA1, getRoleA2);
 
-router.get('/user/managerment-A3', verifyToken, checkA2, getRoleA3);
+router.get('/user/managerment-A3', verifyToken, checkA2, getRoleLower);
 
-router.get('/user/managerment-B1', verifyToken, checkA3, getRoleB1);
+router.get('/user/managerment-B1', verifyToken, checkA3, getRoleLower);
 
-router.get('/user/managerment-B2', verifyToken, checkB1, getRoleB2);
+router.get('/user/managerment-B2', verifyToken, checkB1, getRoleLower);
 
 router.delete('/logout', verifyToken, logout);
 

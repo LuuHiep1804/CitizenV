@@ -20,13 +20,24 @@ const schema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    license: {
+    manager: {
+        type: String
+    },
+    license_status: {
         type: Boolean,
         default: false
+    },
+    license_date: {
+        type: String,
+        default: ""
     },
     license_term: {
         type: String,
         default: ""
+    },
+    license_start: {
+        type: Boolean,
+        default: false
     },
     refreshToken: {
         type: String,
