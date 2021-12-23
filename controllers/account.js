@@ -34,7 +34,7 @@ const updateRefreshToken = async (userId, refreshToken) => {
     });
 }
 
-const updateLicense = async (user) => {
+const updateLicense = (user) => {
     const date = new Date().getDate();
     const month = new Date().getMonth() + 1;
     const year = new Date().getFullYear();
@@ -52,19 +52,25 @@ const updateLicense = async (user) => {
             user.license_start = false;
             user.license_date = "";
             user.license_term = "";
+            checkLicense(user);
         }
     }
     updateUser(user);
-    return user;
 }
 
-const checkLicense = async (user) => {
-    const manager = await AccountModel.findById(user.manager);
-    if(manager.license_status === false) {
-        user.license_status = false;
-        updateUser(user);
+const checkLicense = async (manager) => {
+    if(manager.license_status == false) {
+        if(manager.role !== 'B2') {
+            let users = await AccountModel.find({manager: manager._id});
+            for(let i = 0; i < users.length; i++) {
+                users[i].license_status = false;
+                updateUser(users[i]);
+                updateLicense(users[i]);
+                checkLicense(users[i]);
+            }
+        }
     }
-    return user;
+    updateLicense(manager);
 }
 
 const updateUser = async (user) => {
@@ -112,11 +118,10 @@ export const getUser = async (req, res) => {
     try {
         const data = req.data;
         let user = await AccountModel.findById(data._id);
-        user = await checkLicense(user);
-        user = await updateLicense(user);
-        updateUser(user);
-        user.password = "";
-        res.status(200).json(user);
+        // checkLicense(user);
+        let newUpdate = await AccountModel.findById(data._id);
+        newUpdate.password = "";
+        res.status(200).json(newUpdate);
     } catch (err) {
         res.status(500).json({error: err});
     }
@@ -172,8 +177,7 @@ export const update = async (req, res) => {
         const info = req.body;
         await AccountModel.findByIdAndUpdate(_id, info);
         let user = await AccountModel.findById(_id);
-        user = await updateLicense(user);
-        updateUser(user);
+        checkLicense(user);
         res.status(200).json('update success!');
     } catch (err) {
         res.status(500).json({error: err});
@@ -194,9 +198,9 @@ export const getRoleLower = async (req, res) => {
         const manager = req.data._id;
         let users = await AccountModel.find({manager: manager});
         for(let i = 0; i < users.length; i++) {
-            users[i] = await checkLicense(users[i]);
-            users[i] = await updateLicense(users[i]);
-            updateUser(users[i]);
+            // users[i] = await checkLicense(users[i]);
+            // users[i] = await updateLicense(users[i]);
+            // updateUser(users[i]);
             users[i].password = ""
         }
         res.status(200).json(users);
