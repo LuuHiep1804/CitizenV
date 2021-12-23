@@ -196,7 +196,28 @@ export const analysisByLocal = async (req, res) => {
             data._id = _id;
             if (_id.length > 2) {
                 data.belong = _id.slice(0, _id.length - 2);
+            }else{
+                data.belong = "0";
             }
+            const dataByLocal = new AnalysisModel(data);
+            await dataByLocal.save();
+        }
+        res.status(200).json('phân tích thành công!');
+    } catch (error) {
+        res.status(500).json('có lỗi xảy ra!');
+    }
+}
+
+export const analysisByCountry = async (req, res) => {
+    try {
+        const _id = req.params._id;
+        const result = await AnalysisModel.find({belong: "0"});
+        const checkDataAvailable = await AnalysisModel.findById(_id);
+        if (checkDataAvailable) {
+            await AnalysisModel.findByIdAndUpdate(_id, handleData(result));
+        }else {
+            let data = handleData(result);
+            data._id = _id;
             const dataByLocal = new AnalysisModel(data);
             await dataByLocal.save();
         }
