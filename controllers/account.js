@@ -52,13 +52,13 @@ const updateLicense = (user) => {
             user.license_start = false;
             user.license_date = "";
             user.license_term = "";
-            checkLicense(user);
         }
     }
     updateUser(user);
 }
 
 const checkLicense = async (manager) => {
+    updateLicense(manager);
     if(manager.license_status == false) {
         if(manager.role !== 'B2') {
             let users = await AccountModel.find({manager: manager._id});
@@ -70,7 +70,6 @@ const checkLicense = async (manager) => {
             }
         }
     }
-    updateLicense(manager);
 }
 
 const updateUser = async (user) => {
@@ -118,10 +117,15 @@ export const getUser = async (req, res) => {
     try {
         const data = req.data;
         let user = await AccountModel.findById(data._id);
-        // checkLicense(user);
-        let newUpdate = await AccountModel.findById(data._id);
-        newUpdate.password = "";
-        res.status(200).json(newUpdate);
+        if(user.role !== 'A1') {
+            updateLicense(user);
+            let newUpdate = await AccountModel.findById(data._id);
+            checkLicense(newUpdate);
+            newUpdate.password = "";
+            res.status(200).json(newUpdate);
+        }else{
+            res.status(200).json(user);
+        }
     } catch (err) {
         res.status(500).json({error: err});
     }
@@ -187,6 +191,11 @@ export const update = async (req, res) => {
 export const getRoleA2 = async (req, res) => {
     try {
         let users = await AccountModel.find({role: 'A2'});
+        for(let i = 0; i < users.length; i++) {
+            updateLicense(users[i]);
+            checkLicense(users[i]);
+            users[i].password = ""
+        }
         res.status(200).json(users);
     } catch (err) {
         res.status(500).json({error: err});
@@ -198,9 +207,8 @@ export const getRoleLower = async (req, res) => {
         const manager = req.data._id;
         let users = await AccountModel.find({manager: manager});
         for(let i = 0; i < users.length; i++) {
-            // users[i] = await checkLicense(users[i]);
-            // users[i] = await updateLicense(users[i]);
-            // updateUser(users[i]);
+            updateLicense(users[i]);
+            checkLicense(users[i]);
             users[i].password = ""
         }
         res.status(200).json(users);
