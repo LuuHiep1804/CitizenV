@@ -31,4 +31,6 @@ router.put('/update-B1/:_id', verifyToken, checkA3, update);
 
 router.put('/update-B2/:_id', verifyToken, checkB1, update);
 
+router.put('update/:_id', verifyToken, update);
+
 export default router;
