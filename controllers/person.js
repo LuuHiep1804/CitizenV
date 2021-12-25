@@ -119,7 +119,7 @@ export const getPersonByName = async (req, res) => {
                         people.push(person);
                     });
                 }
-            }else if(local_id == 4) {
+            }else if(local_id.length == 4) {
                 const wards = await WardModel.find({district_id: local_id});
                 let groups = [];
                 for (let i = 0; i < wards.length; i++) {
@@ -134,7 +134,7 @@ export const getPersonByName = async (req, res) => {
                         people.push(person);
                     });
                 }
-            }else if(local_id == 6) {
+            }else if(local_id.length == 6) {
                 const groups = await RGroupModel.find({ward_id: local_id});
                 for(let i = 0; i < groups.length; i++) {
                     let personByGroupId = await searchByName(name, groups[i]);
