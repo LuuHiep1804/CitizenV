@@ -28,6 +28,12 @@ const formPerson = (people) => {
     return people;
 }
 
+const removeAccents = (str) => {
+    return str.normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+}
+
 export const getPersonById = async (req, res) => {
     try {
         const _id = req.params._id;
@@ -61,6 +67,17 @@ export const getPersonById = async (req, res) => {
             province: province.name
         };
         res.status(200).json(person);
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
+}
+
+export const getPersonByName = async (req, res) => {
+    try {
+        const name = removeAccents(req.body.name);
+        const people = await PersonModel.find({$text: {$search: name}}, { score: { $meta: "textScore"}})
+                                                .sort( {score: {$meta: "textScore"}});
+        res.status(200).json(people);
     } catch (err) {
         res.status(500).json({error: err});
     }

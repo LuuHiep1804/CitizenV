@@ -1,5 +1,5 @@
 import express from 'express';
-import {addPerson, getPersonByDistrictId, getPersonById, getPersonByProvinceId, getPersonByRGroupId, getPersonByWardId, updatePerson} from '../controllers/person.js';
+import {addPerson, getPersonByDistrictId, getPersonById, getPersonByName, getPersonByProvinceId, getPersonByRGroupId, getPersonByWardId, updatePerson} from '../controllers/person.js';
 import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -14,8 +14,11 @@ router.get('/by-district/:_id', getPersonByDistrictId);
 
 router.get('/by-province/:_id', getPersonByProvinceId);
 
+router.post('/by-name', getPersonByName);
+
 router.post('/', verifyToken, addPerson);
 
 router.put('/:_id', verifyToken, updatePerson);
+
 
 export default router;
