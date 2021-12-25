@@ -95,53 +95,59 @@ export const getPersonByName = async (req, res) => {
         let people = [];
         if(local_id) {
             if(local_id.length == 2) {
-                let districts = await DistrictModel.find({province_id: local_id});
-                districts = districts.map(district => {
-                    return district._id;
+                let personByGroupId = await PersonModel.find({$text: {$search: name}}, { score: { $meta: "textScore"}})
+                .sort({score: {$meta: "textScore"}})
+                .populate({
+                    path: 'residential_group_id',
+                    populate: {
+                        path: 'ward_id',
+                        populate: {
+                            path: 'district_id',
+                            populate: {path: 'province_id'}
+                        }
+                    }
                 });
-                let wards = [];
-                for(let i = 0; i < districts.length; i++) {
-                    let _wards = await WardModel.find({district_id: districts[i]});
-                    _wards.forEach(ward => {
-                        wards.push(ward._id);
-                    });
-                }
-                let groups = [];
-                for(let i = 0; i < wards.length; i++) {
-                    let _groups = await RGroupModel.find({ward_id: wards[i]});
-                    _groups.forEach(group => {
-                        groups.push(group._id);
-                    });
-                }
-                for(let i = 0; i < groups.length; i++) {
-                    let personByGroupId = await searchByName(name, groups[i]);
-                    personByGroupId.forEach(person => {
+                personByGroupId.forEach(person => {
+                    if(person.residential_group_id.ward_id.district_id.province_id._id == local_id) {
                         people.push(person);
-                    });
-                }
+                    }
+                });
             }else if(local_id.length == 4) {
-                const wards = await WardModel.find({district_id: local_id});
-                let groups = [];
-                for (let i = 0; i < wards.length; i++) {
-                    let _groups = await RGroupModel.find({ward_id: wards[i]._id});
-                    _groups.forEach(_group => {
-                        groups.push(_group._id);
-                    });
-                }
-                for(let i = 0; i < groups.length; i++) {
-                    let personByGroupId = await searchByName(name, groups[i]);
-                    personByGroupId.forEach(person => {
+                let personByGroupId = await PersonModel.find({$text: {$search: name}}, { score: { $meta: "textScore"}})
+                .sort({score: {$meta: "textScore"}})
+                .populate({
+                    path: 'residential_group_id',
+                    populate: {
+                        path: 'ward_id',
+                        populate: {
+                            path: 'district_id',
+                            populate: {path: 'province_id'}
+                        }
+                    }
+                });
+                personByGroupId.forEach(person => {
+                    if(person.residential_group_id.ward_id.district_id._id == local_id) {
                         people.push(person);
-                    });
-                }
+                    }
+                });
             }else if(local_id.length == 6) {
-                const groups = await RGroupModel.find({ward_id: local_id});
-                for(let i = 0; i < groups.length; i++) {
-                    let personByGroupId = await searchByName(name, groups[i]);
-                    personByGroupId.forEach(person => {
+                let personByGroupId = await PersonModel.find({$text: {$search: name}}, { score: { $meta: "textScore"}})
+                .sort({score: {$meta: "textScore"}})
+                .populate({
+                    path: 'residential_group_id',
+                    populate: {
+                        path: 'ward_id',
+                        populate: {
+                            path: 'district_id',
+                            populate: {path: 'province_id'}
+                        }
+                    }
+                });
+                personByGroupId.forEach(person => {
+                    if(person.residential_group_id.ward_id._id == local_id) {
                         people.push(person);
-                    });
-                }
+                    }
+                });
             }else {
                 let personByGroupId = await searchByName(name, local_id);
                 personByGroupId.forEach(person => {
