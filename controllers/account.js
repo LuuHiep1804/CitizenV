@@ -44,6 +44,9 @@ const updateLicense = (user) => {
         user.license_date = "";
         user.license_term = "";
     }else {
+        if(user.license_date > now) {
+            user.license_start = false;
+        }
         if(user.license_date == now) {
             user.license_start = true
         }
