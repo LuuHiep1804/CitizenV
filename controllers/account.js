@@ -35,27 +35,61 @@ const updateRefreshToken = async (userId, refreshToken) => {
 }
 
 const updateLicense = (user) => {
-    const date = new Date().getDate();
-    const month = new Date().getMonth() + 1;
-    const year = new Date().getFullYear();
-    const now = `${date}/${month}/${year}`;
+    const dateNow = Number.parseInt(new Date().getDate());
+    const monthNow = Number.parseInt(new Date().getMonth()) + 1;
+    const yearNow = Number.parseInt(new Date().getFullYear());
     if(user.license_status == false) {
         user.license_start = false;
         user.license_date = "";
         user.license_term = "";
     }else {
-        if(user.license_date > now) {
+        let dateStart = Number.parseInt(user.license_date.split('/')[0]);
+        let monthStart = Number.parseInt(user.license_date.split('/')[1]);
+        let yearStart = Number.parseInt(user.license_date.split('/')[2]);
+        let dateTerm = Number.parseInt(user.license_term.split('/')[0]);
+        let monthTerm = Number.parseInt(user.license_term.split('/')[1]);
+        let yearTerm = Number.parseInt(user.license_term.split('/')[2]);
+        //start
+        if(yearStart === yearNow) {
+            if(monthStart === monthNow) {
+                if(dateStart <= dateNow) {
+                    user.license_start = true;
+                }else {
+                    user.license_start = false;
+                }
+            }else if(monthStart < monthNow) {
+                user.license_start = true;
+            }else {
+                user.license_start = false;
+            }
+        }else if(yearStart < yearNow) {
+            user.license_start = true;
+        }else {
             user.license_start = false;
         }
-        if(user.license_date == now || user.license_date < now) {
-            user.license_start = true
-        }
-        if(user.license_term < now) {
+
+        //end
+        if(yearTerm === yearNow) {
+            if(monthTerm === monthNow) {
+                if(dateTerm < dateNow) {
+                    user.license_status = false;
+                    user.license_date = "";
+                    user.license_term = "";
+                    user.license_start = false;
+                }
+            }else if(monthTerm < monthNow) {
+                user.license_status = false;
+                user.license_date = "";
+                user.license_term = "";
+                user.license_start = false;
+            }
+        }else if(yearTerm < yearNow) {
             user.license_status = false;
-            user.license_start = false;
             user.license_date = "";
             user.license_term = "";
+            user.license_start = false;
         }
+
     }
     updateUser(user);
 }
