@@ -5,7 +5,7 @@ export const getAllProvince = async (req, res) => {
         const allProvince = await ProvinceModel.find();
         res.status(200).json(allProvince);
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -15,7 +15,7 @@ export const getProvinceById = async (req, res) => {
         const province = await ProvinceModel.findById({_id: _id});
         res.status(200).json(province);
     } catch (err) {
-        console.log({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -26,7 +26,7 @@ export const createProvince = async (req, res) => {
         await province.save();
         res.status(200).json("thêm tỉnh/thành thành công!");
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -35,8 +35,8 @@ export const updateProvince = async(req, res) => {
         const _id = req.params._id;
         const newUpdate = req.body;
         await ProvinceModel.findByIdAndUpdate(_id, newUpdate);
-        res.status(200).json("update success!");
+        res.status(200).json("cập nhật thành công!");
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }

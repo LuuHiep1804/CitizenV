@@ -130,7 +130,7 @@ export const login = async (req, res) => {
             res.status(401).json('mật khẩu hoặc tài khoản sai');
         }
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -164,7 +164,7 @@ export const getUser = async (req, res) => {
             res.status(200).json(user);
         }
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -175,7 +175,7 @@ export const logout = async (req, res) => {
         updateRefreshToken(data._id, "");
         res.status(200).json('đã xóa refreshToken');
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -205,10 +205,10 @@ export const register = async (req, res) => {
         }else {
             const user = new AccountModel(info);
             await user.save();
-            res.status(200).json('register success!');
+            res.status(200).json('tạo thành công!');
         }
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -219,9 +219,9 @@ export const update = async (req, res) => {
         await AccountModel.findByIdAndUpdate(_id, info);
         let user = await AccountModel.findById(_id);
         checkLicense(user);
-        res.status(200).json('update success!');
+        res.status(200).json('cập nhật thành công!');
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -235,7 +235,7 @@ export const getRoleA2 = async (req, res) => {
         }
         res.status(200).json(users);
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -250,6 +250,6 @@ export const getRoleLower = async (req, res) => {
         }
         res.status(200).json(users);
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }

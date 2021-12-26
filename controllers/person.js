@@ -84,7 +84,7 @@ export const getPersonById = async (req, res) => {
         };
         res.status(200).json(person);
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -173,7 +173,7 @@ export const getPersonByName = async (req, res) => {
         }
         res.status(200).json(formPerson(people));
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -196,7 +196,7 @@ export const getPersonByRGroupId = async (req, res) => {
         });
         res.status(200).json(formPerson(personByRGroupId));
     } catch (err) {
-        res.status(500).json({error: err})
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -224,7 +224,7 @@ export const getPersonByWardId = async (req, res) => {
         }
         res.status(200).json(formPerson(personByWardId));
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -261,7 +261,7 @@ export const getPersonByDistrictId = async (req, res) => {
         }
         res.status(200).json(formPerson(personByDistrict)); 
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -308,7 +308,7 @@ export const getPersonByProvinceId = async (req, res) => {
         }
         res.status(200).json(formPerson(personByProvince));
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -335,7 +335,7 @@ export const addPerson = async (req, res) => {
             res.status(200).json('add success!');
         }
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
 
@@ -344,8 +344,8 @@ export const updatePerson = async (req, res) => {
         const _id = req.params._id;
         let infoUpdate = req.body;
         await PersonModel.findByIdAndUpdate(_id, infoUpdate);
-        res.status(200).json('update success!');
+        res.status(200).json('cập nhật thành công!');
     } catch (err) {
-        res.status(500).json({error: err});
+        res.status(500).json('Có lỗi xảy ra!');
     }
 }
